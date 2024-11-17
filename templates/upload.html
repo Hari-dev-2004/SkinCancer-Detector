@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CancerScan - Skin Cancer Detection</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+        body, html {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(45deg, #3498db, #8e44ad, #2ecc71);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        header {
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5em;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon span {
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        .typewriter-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100px;
+            margin: 40px 0;
+        }
+
+        .typewriter {
+            color: white;
+            font-size: 1.5em;
+            overflow: hidden;
+            border-right: 3px solid white;
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: 0.15em;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: white; }
+        }
+
+        .upload-container {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            margin: 40px 0;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-label {
+            background-color: #3498db;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .file-label:hover {
+            background-color: #2980b9;
+            transform: scale(1.05);
+        }
+
+        .submit-btn {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .submit-btn:hover {
+            background-color: #27ae60;
+            transform: scale(1.05);
+        }
+
+        .home-gif-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg">
+        <header>
+            <div class="logo">
+                <div class="logo-icon"><span>CS</span></div>
+                CancerScan
+            </div>
+        </header>
+        
+        <div class="typewriter-container">
+            <div class="typewriter" id="typewriter"></div>
+        </div>
+        <div class="home-gif-container">
+            <img src="{{ url_for('serve_template_file', filename='home.gif') }}" alt="Home GIF">
+        </div>
+        <div class="upload-container">
+            <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">
+                <label for="file-upload" class="file-label">Choose File</label>
+                <input id="file-upload" class="file-input" type="file" name="file" accept="image/*">
+                <br>
+                <input type="submit" value="Analyze Image" class="submit-btn">
+            </form>
+        </div>
+        
+    </div>
+
+    <script>
+        document.getElementById('file-upload').onchange = function() {
+            document.querySelector('.file-label').textContent = this.files[0].name;
+        };
+
+        const text = "Scan Your Skin With CancerScan";
+        let i = 0;
+        function typeWriter() {
+            if (i < text.length) {
+                document.getElementById("typewriter").innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 100);
+            } else {
+                setTimeout(() => {
+                    document.getElementById("typewriter").innerHTML = "";
+                    i = 0;
+                    typeWriter();
+                }, 2000);
+            }
+        }
+        typeWriter();
+    </script>
+</body>
+</html>
